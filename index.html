@@ -1,37 +1,293 @@
+# Assignment 1 — DevOps CI/CD Website
+
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Raif Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Assignment 1 - Raif</title>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
-            background: #111827;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
             color: white;
+            line-height: 1.6;
+        }
+
+        .hero {
             text-align: center;
-            padding-top: 100px;
-            font-family: Arial;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #111827, #1e293b);
+            border-bottom: 3px solid #38bdf8;
         }
 
-        h1 {
-            font-size: 60px;
+        .hero h1 {
+            font-size: 70px;
+            margin-bottom: 20px;
+            color: #38bdf8;
         }
 
-        p {
-            font-size: 25px;
+        .hero h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
         }
 
+        .hero p {
+            font-size: 24px;
+            color: #cbd5e1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 0;
+        }
+
+        .section {
+            background: #1e293b;
+            margin-bottom: 25px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .section h3 {
+            color: #38bdf8;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .section p {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .code {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin-top: 15px;
+            border-left: 4px solid #38bdf8;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #f8fafc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #111827;
+            margin-top: 40px;
+            border-top: 2px solid #38bdf8;
+        }
+
+        .footer h3 {
+            color: #38bdf8;
+            margin-bottom: 10px;
+        }
     </style>
-
 </head>
 
 <body>
 
-    <h1>Khulja 🚀</h1>
+    <div class="hero">
+        <h1>Muhammad Raif Ali</h1>
+        <h2>Assignment 1</h2>
+        <p>Azure VM Hosting using GitHub Actions CI/CD</p>
+    </div>
 
-    <p>Azure VM + GitHassasasacasffafsavfefctions CI/CD</p>
+    <div class="container">
+
+        <div class="section">
+            <h3>Project Overview</h3>
+            <p>
+                This project demonstrates how to host a static website on an Azure Virtual Machine
+                using Nginx and automate deployment using GitHub Actions.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>Step 1 — Azure VM Setup</h3>
+            <p>
+                Connected to Azure Ubuntu VM using SSH.
+            </p>
+
+            <div class="code">
+                <pre>
+ssh raif@20.66.70.155
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 2 — Installed Required Packages</h3>
+            <p>
+                Installed Nginx and Git on the Azure VM.
+            </p>
+
+            <div class="code">
+                <pre>
+sudo apt update
+sudo apt install nginx git -y
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 3 — Created Website Project</h3>
+            <p>
+                Created website folder and added HTML code.
+            </p>
+
+            <div class="code">
+                <pre>
+mkdir ~/mywebsite
+cd ~/mywebsite
+nano index.html
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 4 — GitHub Repository Setup</h3>
+            <p>
+                Created GitHub repository and pushed local code using Git.
+            </p>
+
+            <div class="code">
+                <pre>
+git init
+git add .
+git commit -m "Initial website"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/mywebsite.git
+git push -u origin main
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 5 — Nginx Configuration</h3>
+            <p>
+                Configured Nginx to serve website files.
+            </p>
+
+            <div class="code">
+                <pre>
+sudo nano /etc/nginx/sites-available/mywebsite
+sudo ln -s /etc/nginx/sites-available/mywebsite /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 6 — GitHub Actions CI/CD</h3>
+            <p>
+                Configured GitHub Actions workflow to automatically deploy changes to Azure VM.
+            </p>
+
+            <div class="code">
+                <pre>
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Deploy to Azure VM
+      uses: appleboy/ssh-action@v1.0.3
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 7 — SSH Authentication Fix</h3>
+            <p>
+                Fixed SSH authentication issue by generating SSH keys for the correct user (raif)
+                and adding the public key to authorized_keys.
+            </p>
+
+            <div class="code">
+                <pre>
+ssh-keygen -t rsa -b 4096
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 8 — Fixed Dubious Ownership Error</h3>
+            <p>
+                Fixed Git safe directory and ownership issues.
+            </p>
+
+            <div class="code">
+                <pre>
+sudo chown -R raif:raif /home/raif/mywebsite
+sudo chown -R raif:raif /var/www/mywebsite
+
+git config --global --add safe.directory /home/raif/mywebsite
+git config --global --add safe.directory /var/www/mywebsite
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Final Result</h3>
+            <p>
+                The website is now automatically deployed whenever code is pushed to GitHub.
+            </p>
+
+            <p>
+                Technologies Used:
+            </p>
+
+            <ul style="padding-left: 20px; font-size: 18px;">
+                <li>Azure VM</li>
+                <li>Ubuntu Linux</li>
+                <li>Nginx</li>
+                <li>Git & GitHub</li>
+                <li>GitHub Actions</li>
+                <li>CI/CD Pipeline</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <h3>Assignment Submitted By</h3>
+        <p>Muhammad Raif Ali</p>
+    </div>
 
 </body>
 
 </html>
+```
