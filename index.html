@@ -1,3 +1,6 @@
+# Assignment 1 — DevOps CI/CD Website
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -172,7 +175,7 @@ git init
 git add .
 git commit -m "Initial website"
 git branch -M main
-git remote add origin https://github.com/airbearmaster/mywebsite.git
+git remote add origin https://github.com/YOUR_USERNAME/mywebsite.git
 git push -u origin main
                 </pre>
             </div>
@@ -253,6 +256,56 @@ sudo chown -R raif:raif /var/www/mywebsite
 
 git config --global --add safe.directory /home/raif/mywebsite
 git config --global --add safe.directory /var/www/mywebsite
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 9 — DuckDNS Domain Configuration</h3>
+            <p>
+                Created a free DuckDNS domain and pointed it to the Azure VM public IP.
+            </p>
+
+            <div class="code">
+                <pre>
+Domain Created:
+raif-assigment1.duckdns.org
+
+Azure VM Public IP:
+20.66.70.155
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Step 10 — SSL/HTTPS Configuration using Certbot</h3>
+            <p>
+                Installed Certbot and generated a free SSL certificate using Let's Encrypt.
+            </p>
+
+            <div class="code">
+                <pre>
+sudo apt update
+sudo apt install certbot python3-certbot-nginx -y
+
+sudo certbot --nginx
+                </pre>
+            </div>
+
+            <p>
+                Certbot automatically configured HTTPS and SSL certificates for the website.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>Step 11 — HTTPS Enabled Successfully</h3>
+            <p>
+                The website is now securely accessible using HTTPS with automatic certificate renewal.
+            </p>
+
+            <div class="code">
+                <pre>
+https://raif-assigment1.duckdns.org
                 </pre>
             </div>
         </div>
